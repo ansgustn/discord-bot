@@ -35,7 +35,20 @@ class LevelSystem(commands.Cog):
         # 경험치 부여 (지급량은 15~25 사이 랜덤 등 다양하게 설정 가능, 여기서는 고정값 20 부여)
         xp_to_add = 20
 
+        username = message.author.display_name
+        avatar_url = message.author.display_avatar.url if message.author.display_avatar else ""
+
         db = await database.get_db_connection()
+        
+        # 유저 메타데이터 저장 (웹 대시보드용)
+        await db.execute('''
+            INSERT INTO Users (user_id, username, avatar_url)
+            VALUES (?, ?, ?)
+            ON CONFLICT(user_id) DO UPDATE SET
+            username = excluded.username,
+            avatar_url = excluded.avatar_url
+        ''', (user_id, username, avatar_url))
+
         # 데이터가 없으면 삽입하고, 있으면 무시하여 초기 설정
         await db.execute('''
             INSERT OR IGNORE INTO LevelStats (user_id, xp, level)

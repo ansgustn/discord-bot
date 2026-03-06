@@ -40,6 +40,25 @@ bot = CustomBot()
 @bot.event
 async def on_ready():
     print(f'로그인 성공: {bot.user} (ID: {bot.user.id})')
+    
+    # 서버에 있는 모든 유저 정보를 DB에 저장 (웹 대시보드를 위해)
+    db = await database.get_db_connection()
+    for guild in bot.guilds:
+        for member in guild.members:
+            if member.bot:
+                continue
+            username = member.display_name
+            avatar_url = member.display_avatar.url if member.display_avatar else ""
+            await db.execute('''
+                INSERT INTO Users (user_id, username, avatar_url)
+                VALUES (?, ?, ?)
+                ON CONFLICT(user_id) DO UPDATE SET
+                username = excluded.username,
+                avatar_url = excluded.avatar_url
+            ''', (member.id, username, avatar_url))
+    await db.commit()
+    await db.close()
+    print("유저 메타데이터 동기화 완료.")
     print('-----------------------------------------')
 
 if __name__ == '__main__':

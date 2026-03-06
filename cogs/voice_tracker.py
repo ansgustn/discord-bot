@@ -36,6 +36,20 @@ class VoiceTracker(commands.Cog):
                 join_time = self.voice_sessions.pop(member.id)
                 session_time = int(time.time() - join_time)
                 
+                # 유저 정보 저장 (웹 대시보드 시각화용)
+                username = member.display_name
+                avatar_url = member.display_avatar.url if member.display_avatar else ""
+                db = await database.get_db_connection()
+                await db.execute('''
+                    INSERT INTO Users (user_id, username, avatar_url)
+                    VALUES (?, ?, ?)
+                    ON CONFLICT(user_id) DO UPDATE SET
+                    username = excluded.username,
+                    avatar_url = excluded.avatar_url
+                ''', (member.id, username, avatar_url))
+                await db.commit()
+                await db.close()
+
                 await self.add_voice_time(member.id, session_time)
                 
         # 채널 이동 (A채널 -> B채널)

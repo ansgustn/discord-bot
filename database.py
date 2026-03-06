@@ -40,6 +40,18 @@ async def init_db():
             )
         ''')
         
+        # 유저 메타데이터 보관 테이블 (웹 대시보드용)
+        # user_id: 디스코드 유저 ID
+        # username: 디스코드 닉네임 (display_name)
+        # avatar_url: 프로필 사진 URL
+        await db.execute('''
+            CREATE TABLE IF NOT EXISTS Users (
+                user_id INTEGER PRIMARY KEY,
+                username TEXT,
+                avatar_url TEXT
+            )
+        ''')
+        
         await db.commit()
 
 async def get_db_connection():
