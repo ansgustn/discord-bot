@@ -28,7 +28,7 @@ class CustomBot(commands.Bot):
         
         # 기능 추가 (Cogs)
         # Cogs 파일을 만들기 전에는 주석 처리 또는 try-except 권장
-        for cog in ['cogs.voice_tracker', 'cogs.level_system']:
+        for cog in ['cogs.voice_tracker', 'cogs.level_system', 'cogs.ranking']:
             try:
                 await self.load_extension(cog)
                 print(f"{cog} 로드 성공!")
