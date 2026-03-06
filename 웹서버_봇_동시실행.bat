@@ -15,7 +15,7 @@ echo [3/3] 외부 링크 터널링(Cloudflare)을 시작합니다.
 echo 잠시 후 아래 팝업창(검은 화면)에 나오는 "https://****.trycloudflare.com" 형식의 주소를 복사해서 사람들에게 공유하세요!
 echo (이 주소는 보안 경고창 없이 바로 접속됩니다.)
 echo.
-start "Web Dashboard Tunnel" cmd /k "npx -y @cloudflare/cloudflared --url http://127.0.0.1:5000"
+start "Web Dashboard Tunnel" cmd /k "npx -y cloudflared --url http://127.0.0.1:5000"
 
 echo.
 echo ========================================================
