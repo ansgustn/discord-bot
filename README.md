@@ -12,7 +12,7 @@
 
 * **Language:** Python
 * **Database:** SQLite (`aiosqlite` 기반 비동기 DB 처리)
-* **Library:** `discord.py` (추정)
+* **Library:** `main.py`
 
 ##  데이터베이스 구조 (DB Schema)
 
